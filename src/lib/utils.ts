@@ -13,6 +13,14 @@ export const extractUUIDFromString = (url: string) => {
   )
 }
 
+export const extractEmailsFromString = (text: string) => {
+  return text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
+}
+
+export const postToParent = (message: string) => {
+  window.parent.postMessage(message, '*')
+}
+
 export const pusherServer = {}
 //    new PusherServer({
 //   appId: process.env.PUSHER_APP_ID as string,

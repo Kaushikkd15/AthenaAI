@@ -1,8 +1,16 @@
+'use client'
+import { onAiChatBotAssistant, onGetCurrentChatBot } from "@/actions/chatbot"
+import { postToParent } from "@/lib/utils"
 import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversation.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
+import {UploadClient} from "@uploadcare/upload-client"
 import { boolean, string } from "zod"
+
+const upload = new UploadClient({
+    publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string
+})
 
 export const useChatBot = () => {
     const {register, handleSubmit, reset} = useForm<ChatBotMessageProps>({
@@ -60,4 +68,52 @@ export const useChatBot = () => {
             })
         )
     }, [botOpened])
+
+    let limitRequest =0;
+
+    useEffect(() => {
+        window.addEventListener('message', (e) => {
+         const botid= e.data
+         if(limitRequest < 1 && typeof botid == 'string'){
+            onGetDomainChatBot(botid)
+            limitRequest++
+         }
+        })
+        
+     }, [])
+
+     const onGetDomainChatBot = async (id: string) => {
+        setCurrentBotId(id)
+        const chatbot = await onGetCurrentChatBot(id)
+        if(chatbot){
+            setOnChats((prev) => [...prev, {
+                role: 'assistant',
+                content: chatbot.chatBot?.welcomeMessage!
+            },
+        ])
+        setCurrentBot(chatbot)
+        setLoading(false)
+        }
+     }
+
+     const onStartChatting = handleSubmit( async(values) => {
+        reset()
+        if(values.image.length){
+        const uploaded = await upload.uploadFile(values.image[0])
+        setOnChats((prev: any) => [
+            ...prev,
+            {
+                role: 'user',
+                content: uploaded.uuid,
+            },
+        ])
+        setOnAiTyping(true)
+        const response = await onAiChatBotAssistant(
+            currentBotId!,
+            onChats,
+            'user',
+            uploaded.uuid
+        )
+       } 
+    })
 }
