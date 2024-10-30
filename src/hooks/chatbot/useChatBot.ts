@@ -1,6 +1,6 @@
 'use client'
 import { onAiChatBotAssistant, onGetCurrentChatBot } from "@/actions/chatbot"
-import { postToParent } from "@/lib/utils"
+import { postToParent, pusherClient } from "@/lib/utils"
 import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversation.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
@@ -114,6 +114,83 @@ export const useChatBot = () => {
             'user',
             uploaded.uuid
         )
+        if(response){
+            setOnAiTyping(false)
+            if(response.live){
+                setOnRealTime((prev)=> ({
+                    ...prev,
+                    chatroom: response.chatRoom,
+                    mode: response.live,
+                }))
+            } else{
+                setOnChats((prev: any) => [...prev, response.response])
+            }
+        }
+       }
+       if(values.content){
+        setOnChats((prev: any) => [
+            ...prev, {
+                role: 'user',
+                content: values.content,
+            },
+        ])
+
+        setOnAiTyping(true)
+
+        const response = await onAiChatBotAssistant(
+            currentBotId!,
+            onChats,
+            'user',
+            values.content
+        )
+        if(response){
+            setOnAiTyping(false)
+            if(response.live){
+                setOnRealTime((prev) => ({
+                    ...prev,
+                    chatroom: response.chatRoom,
+                    mode: response.live,
+                }))
+            }else{
+                setOnChats((prev: any) => [...prev, response.response])
+            }
+        }
        } 
     })
+    return {
+        botOpened,
+        loading,
+        onOpenChatBot,
+        onStartChatting,
+        onChats,
+        register,
+        onAiTyping,
+        messageWindowRef,
+        currentBot,
+        setOnChats,
+        onRealTime
+    }
 }
+
+// export const useRealTime = (chatRoom: string, setChats: React.Dispatch<React.SetStateAction<{
+//     role: 'user' | 'assistant'
+//     content: string
+//     link?: string | undefined
+//             }[]
+//         >
+//     >) => {
+//         useEffect(() => {
+//             pusherClient.subscribe(chatRoom)
+//             pusherClient.bind('realtime-mode', (data: any) => {
+//                 setChats((prev: any) => [
+//                     ...prev,
+//                     {
+//                         role: data.chat.role,
+//                         content: data.chat.message,
+//                     }
+//                 ])
+//             })
+//             return () => 
+//                 pusherClient.unsubscribe('realtime-mode')
+//         }, [])
+//     } 
