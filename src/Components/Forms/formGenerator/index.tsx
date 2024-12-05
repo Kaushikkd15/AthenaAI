@@ -16,9 +16,10 @@ type Props = {
     errors: FieldErrors<FieldValues>
     lines?:number
     form?: string
+    defaultValue?: string
 }
 
-const FormGenerator = ({errors,inputType,name,placeholder,register,type,form,label,lines,options}: Props) => {
+const FormGenerator = ({defaultValue,errors,inputType,name,placeholder,register,type,form,label,lines,options}: Props) => {
       switch(inputType){
         case "input":
         default:
@@ -26,7 +27,7 @@ const FormGenerator = ({errors,inputType,name,placeholder,register,type,form,lab
                 <Label className='flex flex-col gap-2'
                 htmlFor={`input-${label}`}>
                 {label && label}
-                <Input id={`input-${label}`} type={type} placeholder={placeholder} form={form} {...register(name)} />
+                <Input id={`input-${label}`} type={type} placeholder={placeholder} form={form} defaultValue={defaultValue} {...register(name)} />
                 <ErrorMessage errors={errors} name={name} render={({message}) => (
                     <p className='text-red-400 mt-2'>
                         {message === 'Required' ? '' : message}
@@ -66,6 +67,7 @@ const FormGenerator = ({errors,inputType,name,placeholder,register,type,form,lab
                 form={form}
                 id={`input-${label}`}
                 placeholder={placeholder}
+                defaultValue={defaultValue}
                 {...register(name)}
                 rows={lines} />
                 <ErrorMessage errors={errors} name={name} render={({message}) => (

@@ -1,7 +1,6 @@
 import { cn, extractUUIDFromString, getMonthName } from '@/lib/utils'
-import { AvatarFallback } from '@radix-ui/react-avatar'
 import React from 'react'
-import { Avatar, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -37,7 +36,7 @@ const Bubble = ({message, createdAt}: Props) => {
                 </AvatarFallback>
             </Avatar>
         )}
-        <div className={cn('flex flex-col gap-3 min-w-[200px] max-w-[300px] p-4 rounded-t-md', message.role == 'assistant' ? 'bg-muted rounded-r-md' : 'bg-iridium  rounded-l-md')}>
+        <div className={cn('flex flex-col gap-3 min-w-[200px] max-w-[300px] p-4 rounded-t-md', message.role == 'assistant' ? 'bg-muted rounded-r-md' : 'bg-grandis  rounded-l-md')}>
             
             {createdAt ? (
                 <div className='flex gap-2 text-xs text-gray-600'>

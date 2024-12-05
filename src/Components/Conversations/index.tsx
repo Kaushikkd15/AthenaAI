@@ -36,7 +36,7 @@ const ConversationMenu = ({domains}: Props) => {
                   createdAt={room.chatRoom[0].message[0]?.createdAt}
                   key={room.chatRoom[0].id}
                   title={room.email!}
-                  description={room.chatRoom[0].message[0].message}
+                  description={room.chatRoom[0].message[0]?.message}
                   />
                 ))
               ) : (

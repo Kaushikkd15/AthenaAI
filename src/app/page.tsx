@@ -13,7 +13,7 @@ export default function Home() {
         <Navbar />
         <section>
               <div className="flex items-center justify-center flex-col mt-[80px]">
-                <span className="text-gravel bg-gravel/20 px-4 rounded-full text-sm">
+                <span className="text-white bg-black px-4 rounded-full text-base mb-8">
                 An AI powered sales assistant chatbot
                 </span>
                 <Image
@@ -21,13 +21,13 @@ export default function Home() {
                     alt="LOGO"
                     sizes="100vw"
                     style= {{
-                    width: '500px',
-                    height: '150px'
+                    width: '750px',
+                    height: '80px'
                     }}
                     width={0}
                     height={0}
                 />
-                <p className="text-center max-w-[500px]">Your AI powered sales assistant!  Emded Athena AI into any website with just a snippet of code!</p>
+                <p className="text-center max-w-[500px] mt-8 p-1">Your AI powered sales assistant!  Embed Athena AI into any website with just a snippet of code!</p>
                 <Button className="bg-black font-bold text-white px-4 mt-4">
                   Start for free
                 </Button>

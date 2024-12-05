@@ -1,6 +1,5 @@
 import { ChatBotMessageProps } from '@/schemas/conversation.schema'
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar'
-import { register } from 'module'
 import React, { forwardRef } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import RealTimeMode from './realtime'
@@ -16,6 +15,8 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Paperclip, Send } from 'lucide-react'
 import { Label } from '../ui/label'
+import { CardDescription, CardTitle } from '../ui/card'
+import Accordion from '../accordion'
 
 type Props = {
      register: UseFormRegister<ChatBotMessageProps>
@@ -99,9 +100,9 @@ const BotWindow = forwardRef< HTMLDivElement, Props> ((
         </div>
         <TabsMenu
         triggers={
-          help ? BOT_TABS_MENU : [{label: 'chat', icon: <ChatIcon /> }]
+         BOT_TABS_MENU
         }
-        className='bg-transparent border-[1px] border-border m-2'
+        className='bg-transparent border-[1px] border-border m-2 pr-0'
         >
         <TabsContent value='chat'>
          <Separator orientation="horizontal" />
@@ -140,7 +141,26 @@ const BotWindow = forwardRef< HTMLDivElement, Props> ((
               </form>
           </div>
         </TabsContent>
+          <TabsContent value='helpdesk'>
+            <div className='h-[485px] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-3'>
+              <div>
+                <CardTitle>Help Desk</CardTitle>
+                <CardDescription> Browse from a list of questions people usually ask.</CardDescription>
+              </div>
+              <Separator orientation='horizontal' />
+              {helpdesk.map((desk) => (
+                <Accordion
+                key={desk.id}
+                trigger={desk.question}
+                content={desk.answer}
+                />
+              ))}
+            </div>
+          </TabsContent>
         </TabsMenu>
+        <div className='flex justify-center pt-2'>
+            <p className='text-gray-400 text-xs'> Powered By AthenaAi</p>
+        </div>
     </div>
 })
 

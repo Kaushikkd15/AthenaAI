@@ -40,7 +40,7 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
               : current == path
               ? 'bg-white font-bold text-black'
               : 'text-gray-500',
-            'rounded-full py-2 my-1 flex justify-center'
+            'rounded-full py-2 px-2 my-1 flex justify-center'
           )}
           href={path ? `/${path}` : '#'}
         >

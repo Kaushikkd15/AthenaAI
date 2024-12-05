@@ -31,7 +31,7 @@ const Breadcrumb = (props: Props) => {
           : page == 'email-marketing'
           ? 'Send bulk emails to your customers'
           : page == 'integration'
-          ? 'Connect third-party applications into Corinna-AI'
+          ? 'Connect third-party applications into Athena-AI'
           : 'Modify domain settings, change chatbot options, enter sales questions and train your bot to do what you want it to.'}
       </p>
     </div>
