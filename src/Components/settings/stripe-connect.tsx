@@ -10,7 +10,7 @@ type StripeConnectProps = {
 }
 
 const stripeConnect = ({connected}: StripeConnectProps) => {
-    const {onStripeAccountPending, setOnStripeAccountPending } = useStripe()
+    const {onStripeConnect, onStripeAccountPending } = useStripe()
   return (
      <Button disabled={connected}
              onClick={onStripeConnect}
