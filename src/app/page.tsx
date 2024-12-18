@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { Check} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { ContainerScroll } from "@/Components/ui/container-scroll-animation";
 
 export default function Home() {
   return (
@@ -31,13 +32,15 @@ export default function Home() {
                 <Button className="bg-black font-bold text-white px-4 mt-4">
                   Start for free
                 </Button>
+                <ContainerScroll titleComponent={undefined}>
                 <Image 
                      src="/images/iphone.png"
                      alt="phone"
                      width={400}
-                     height={100}
-                     className='max-w-lg object-contain mt-10'
+                     height={90}
+                     className='max-w-lg object-contain mt-10 width:400px height:650px'
                     />
+                  </ContainerScroll>
               </div>
         </section>
         <section className="flex justify-center items-center flex-col gap-4 mt-10">

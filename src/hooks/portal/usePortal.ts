@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { useToast } from "../use-toast"
 import { useState } from "react"
-import { onBookNewAppointment } from "@/actions/appointment"
+import { onBookNewAppointment, saveAnswers } from "@/actions/appointment"
 
 export const usePortal = (
     customerId: string,
@@ -23,22 +23,32 @@ export const usePortal = (
     const onBookAppointment = handleSubmit( async (values) => {
         try {
             setLoading(true)
-            const booked = await onBookNewAppointment(
-                domainId,
-                customerId,
-                values.slot,
-                values.date,
-                email
-            )
+            const questions = Object.keys(values).filter((key)=> key.startsWith('question'))
+                              .reduce((obj:any, key) =>{
+                              obj[key.split('question-')[1]] = values[key]
+                              return obj
+                              },{})
+           
+            const savedAnswers = await saveAnswers(questions, customerId)
+
+            if(savedAnswers){
+                const booked = await onBookNewAppointment(
+                    domainId,
+                    customerId,
+                    values.slot,
+                    values.date,
+                    email
+                )
 
             if(booked && booked.status == 200){
-                setLoading(false)
                 toast({
                     title: 'Success',
                     description: booked.message,
                 })
                 setStep(3)
             }
+            setLoading(false)
+          }
         } catch (error) {
             console.log(error)
         }

@@ -3,6 +3,7 @@ import Infobar from '@/Components/Infobar'
 import BillingSettings from '@/Components/settings/billingSettings'
 import ChangePassword from '@/Components/settings/changePassword'
 import DarkModeToggle from '@/Components/settings/DarkModeToggle'
+import { useThemeMode } from '@/hooks/settings/useSettings'
 import React from 'react'
 
 type Props = {}

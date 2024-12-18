@@ -176,6 +176,7 @@ export const onGetCurrentDomainInfo = async (domain: string)  => {
             name: true,
             icon: true,
             userId: true,
+            products: true,
             chatBot: {
               select: {
                 id:true,
@@ -466,6 +467,39 @@ export const onGetPaymentConnected = async () => {
         }catch(error){
         console.log(error)
         }
+}
+
+export const onCreateNewDomainProduct = async(
+  id:string,
+  name: string,
+  image: string,
+  price: string
+) => {
+  try {
+    const product = await client.domain.update({
+      where: {
+        id,
+      },
+      data: {
+        products: {
+          create: {
+            name,
+            image,
+            price: parseInt(price),
+          }
+        }
+      }
+    })
+
+    if(product){
+      return {
+          status: 200,
+          message: "Product Successfully created"
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 

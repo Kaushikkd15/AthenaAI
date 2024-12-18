@@ -14,7 +14,7 @@ export const AddDomainSchema = z.object({
     })
     .refine((files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type), {
         message: 'only JPG, JPEG & PNG are accepted file formats', 
-    }),
+    })
 })
 
 export  type DomainSettingsProps ={
@@ -29,6 +29,12 @@ export type HelpDeskQuestionProps = {
 }
 export type FilterQuestionProps = {
     question: string,
+}
+
+export type AddProductProps ={
+    name: string,
+    image: any,
+    price: string
 }
 
 export const DomainSettingsSchema = z.object({

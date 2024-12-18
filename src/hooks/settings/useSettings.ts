@@ -6,9 +6,9 @@ import { useTheme } from 'next-themes'
 import { useForm } from 'react-hook-form'
 import { useToast } from '../use-toast'
 import { useEffect, useState } from 'react'
-import { onChatBotImageUpdate, onCreateFilterQuestion, onCreateHelpDeskQuestion, onDeleteUserDomain, onGetAllFilterQuestion, onGetAllHelpDeskQuestions, onUpdateDomain, onUpdatePassword, onUpdateWelcomeMessage } from '@/actions/settings'
+import { onChatBotImageUpdate, onCreateFilterQuestion, onCreateHelpDeskQuestion, onCreateNewDomainProduct, onDeleteUserDomain, onGetAllFilterQuestion, onGetAllHelpDeskQuestions, onUpdateDomain, onUpdatePassword, onUpdateWelcomeMessage } from '@/actions/settings'
 import DomainSettingsPage from '@/app/(dashboard)/settings/[domain]/page'
-import { DomainSettingsProps, DomainSettingsSchema, FilterQuestionProps, FilterQuestionSchema, HelpDeskQuestionProps, HelpDeskQuestionsSchema } from '@/schemas/settings.schema'
+import { AddProductProps, AddProductSchema, DomainSettingsProps, DomainSettingsSchema, FilterQuestionProps, FilterQuestionSchema, HelpDeskQuestionProps, HelpDeskQuestionsSchema } from '@/schemas/settings.schema'
 import { useRouter } from 'next/navigation'
 import {UploadClient} from '@uploadcare/upload-client'
 
@@ -230,4 +230,28 @@ export const useFilterQuestions = (id: string) => {
     isQuestions,
     errors
   } 
+}
+
+export const useProducts = (domainId: string) => {
+  const {toast} = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
+  const {register, reset, formState: {errors}, handleSubmit} = useForm<AddProductProps>({resolver: zodResolver(AddProductSchema)});
+
+  const onCreateNewProduct = handleSubmit(async (values) => {
+    try {
+      setLoading(true)
+      const uploaded = await upload.uploadFile(values.image[0]);
+      const product = await onCreateNewDomainProduct(domainId, values.name, uploaded.uuid, values.price)
+      if(product){
+        reset()
+        toast({
+          title: "Success",
+          description: product.message,
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+  return {onCreateNewProduct, register, errors, loading }
 }
